@@ -8,12 +8,12 @@ bool down = true;
 bool right = true;
 bool left = false;
 
-Ball::Ball(float speed) {
+Ball::Ball(float speed, float x, float y) {
     std::cout << "a ball has been generated." << std::endl; 
     this->speed = speed;
     spriteBall.setFillColor(sf::Color::White);
     spriteBall.setRadius(5.0f);
-    spriteBall.setPosition(540.0f, 360.0f);
+    spriteBall.setPosition(x, y);
 }
 
 void Ball::move() {
@@ -60,7 +60,7 @@ void Ball::move() {
 }
 
 
-void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2) {
+void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2, float height) {
     //border colition
     if(spriteBall.getPosition().y <= 0) {
         std::cout << "colition" << std::endl;
@@ -69,7 +69,7 @@ void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2) {
             down = true;
         }
     }
-    if(spriteBall.getPosition().y >= 710) {
+    if(spriteBall.getPosition().y >= height) {
         std::cout << "colition" << std::endl;
         if(down) {
             up = true;
@@ -90,29 +90,15 @@ void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2) {
 
 void changeDirection(int id) {
     if(id == 1){ 
-        if(&up && &left) {
-            up = false;
-            left = false;
-            down = true;
-            right = true;
-        }else if(&down && &right) {
-            up = true;
-            left = true;
-            down = false;
-            right = false;
-        }
+        up = false;
+        left = false;
+        down = true;
+        right = true;
     }
     if(id == 0) {
-        if(&up && &left) {
-            up = true;
-            left = true;
-            down = false;
-            right = false;
-        }else if(&down && &right) {
-            up = false;
-            left = false;
-            down = true;
-            right = true;
-        }
+        up = true;
+        left = true;
+        down = false;
+        right = false;
     }
 }

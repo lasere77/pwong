@@ -8,12 +8,14 @@ void checkPoint();
 int player1Point = 0;
 int player2Point = 0;
 
-const int width = 1080;
-const int height = 720;
+bool running = false;
 
-Ball ball = Ball(1);
+float width = 1920;
+float height = 1080;
 
-Player player1 = Player(20.0f, 250.0f, 1040.0f, 100.0f, sf::Color::White, 0);
+Ball ball = Ball(1, width, height);
+
+Player player1 = Player(20.0f, 250.0f, (width - 40.f), 100.0f, sf::Color::White, 0);
 Player player2 = Player(20.0f, 250.0f, 10.0f, 100.0f, sf::Color::Red, 1);
 
 Button btnStart = Button("start", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.0f), 280.0f);
@@ -21,17 +23,12 @@ Button btnSetting = Button("setting", sf::Color::Red, 250.0f, 50.0f, (width / 2 
 Button btnExit = Button("exit", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f);
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(width, height), "copy of pong");
+    sf::RenderWindow window(sf::VideoMode(width, height), "copy of pong", sf::Style::Fullscreen);
     window.setFramerateLimit(450);
 
     sf::Font font;
     if(!font.loadFromFile("assets/font/poppins.ttf")) {
-        try {
-            font.loadFromFile("assets/font/poppins.ttf");
-        }
-        catch(const std::exception& e) {
-            std::cerr << e.what() << '\n';
-        }
+        std::cerr << "error" << '\n';
     }
 
     sf::Text labelPointPlayer1, labelPointPlayer2;
@@ -40,7 +37,7 @@ int main() {
 
     labelPointPlayer2.setCharacterSize(15);
     labelPointPlayer2.setFont(font);
-    labelPointPlayer2.setPosition(sf::Vector2(950.0f, 0.0f));
+    labelPointPlayer2.setPosition(sf::Vector2(width - 120, 0.0f));
 
 
     while (window.isOpen()) {
@@ -48,22 +45,49 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+                running = false;
+            }
         }
 
         labelPointPlayer1.setString("player1Point: " + std::to_string(player1Point));
         labelPointPlayer2.setString("player2Point: " + std::to_string(player2Point));
 
-        checkPoint();
+        //std::cout << "x: " << sf::Mouse::getPosition().x << std::endl;
+        //std::cout << "y: " << sf::Mouse::getPosition().y << std::endl;
 
-        ball.move();
+        //btn action
+        if(btnExit.isSelected(window.getPosition())) {
+            return 0;
+        }
+        if(btnSetting.isSelected(window.getPosition())) {
 
-        ball.colition(player1.spritePlayer, player2.spritePlayer);
+        }
+        if(btnStart.isSelected(window.getPosition())) {
+            running = true;
+        }
 
-        player1.move();
-        player2.move();
+        if(running) {
+            checkPoint();
 
-        player1.colition();
-        player2.colition();
+            ball.move();
+
+            ball.colition(player1.spritePlayer, player2.spritePlayer, height);
+
+            player1.move();
+            player2.move();
+
+            player1.colition(height);
+            player2.colition(height);
+        }
+
+
+
+
+
+
+
+
 
         window.clear();
         window.draw(labelPointPlayer1);
@@ -71,9 +95,14 @@ int main() {
         window.draw(ball.spriteBall);
         window.draw(player1.spritePlayer);
         window.draw(player2.spritePlayer);
-        //window.draw(btnStart.spriteButton);
-        //window.draw(btnSetting.spriteButton);
-        //window.draw(btnExit.spriteButton);
+        if(!running) {
+            window.draw(btnStart.spriteButton);
+            window.draw(btnSetting.spriteButton);
+            window.draw(btnExit.spriteButton);
+            window.draw(btnStart.text);
+            window.draw(btnSetting.text);
+            window.draw(btnExit.text);
+        }
         window.display();
     }
     return 0;
@@ -82,12 +111,12 @@ int main() {
 void checkPoint() {
     if(ball.spriteBall.getPosition().x < 0) {
         player2Point = player2Point + 1;
-        ball.spriteBall.setPosition(540.0f, 360.0f);
+        ball.spriteBall.setPosition(width / 2, height / 2);
         std::cout << player2Point << std::endl;
     }
-    if(ball.spriteBall.getPosition().x > 1080) {
+    if(ball.spriteBall.getPosition().x > width) {
         player1Point = player1Point + 1;
-        ball.spriteBall.setPosition(540.0f, 360.0f);
+        ball.spriteBall.setPosition(width / 2, height / 2);
         std::cout << player1Point << std::endl;
     }
 }

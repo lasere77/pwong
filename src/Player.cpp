@@ -29,11 +29,11 @@ void Player::move() {
     }
 }
 
-void Player::colition() {
+void Player::colition(float height) {
     if(spritePlayer.getPosition().y < 0) {
         spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + 1.0f);
     }
-    if(spritePlayer.getPosition().y > 720 - 250) {
+    if(spritePlayer.getPosition().y > height - 250) {
         spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - 1.0f);
     }
 }
