@@ -17,8 +17,9 @@ Ball::Ball(float speed, float x, float y) {
 }
 
 void Ball::move() {
+    float rng = rand() % 4;
     if(down) {
-        spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y + speed );
+        spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y + speed);
     }
     if(up) {
         spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y - speed);
@@ -64,17 +65,13 @@ void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2, floa
     //border colition
     if(spriteBall.getPosition().y <= 0) {
         std::cout << "colition" << std::endl;
-        if(up) {
-            up = false;
-            down = true;
-        }
+        up = false;
+        down = true;
     }
     if(spriteBall.getPosition().y >= height) {
         std::cout << "colition" << std::endl;
-        if(down) {
-            up = true;
-            down = false;
-        }
+        up = true;
+        down = false;
     }
     //player colition
     if(spriteBall.getPosition().y >= player2.getPosition().y && spriteBall.getPosition().y <= player2.getPosition().y + 250 && spriteBall.getPosition().x >= player2.getPosition().x && spriteBall.getPosition().x <= player2.getPosition().x + 20) {
@@ -89,7 +86,7 @@ void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2, floa
 
 
 void changeDirection(int id) {
-    if(id == 1){ 
+    if(id == 1) { 
         up = false;
         left = false;
         down = true;

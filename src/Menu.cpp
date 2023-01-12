@@ -1,6 +1,6 @@
 #include "../include/Menu.hpp"
 
-Button::Button(std::string lable, sf::Color color, float sizeX, float sizeY, float x, float y) {
+Button::Button(std::string label, sf::Color color, float sizeX, float sizeY, float x, float y) {
     this->label = label;
     this->sizeX = sizeX;
     this->sizeY = sizeY;
@@ -15,8 +15,7 @@ Button::Button(std::string lable, sf::Color color, float sizeX, float sizeY, flo
     }
     text.setCharacterSize(15);
     text.setFont(font);
-    text.setPosition(sf::Vector2(x + (sizeX / 2), y + (sizeY / 2)));
-    text.setColor(sf::Color::White);
+    text.setPosition(sf::Vector2(x + (sizeX / 2) - (label.length() * 2), y + (sizeY / 2 - 10)));
     text.setString(label);
     std::cout << "a Button has been generated." << std::endl;
 }

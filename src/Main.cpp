@@ -13,7 +13,7 @@ bool running = false;
 float width = 1920;
 float height = 1080;
 
-Ball ball = Ball(1, width, height);
+Ball ball = Ball(4, width, height);
 
 Player player1 = Player(20.0f, 250.0f, (width - 40.f), 100.0f, sf::Color::White, 0);
 Player player2 = Player(20.0f, 250.0f, 10.0f, 100.0f, sf::Color::Red, 1);
@@ -24,7 +24,9 @@ Button btnExit = Button("exit", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(width, height), "copy of pong", sf::Style::Fullscreen);
-    window.setFramerateLimit(450);
+    window.setFramerateLimit(112);
+
+    srand(time(nullptr));
 
     sf::Font font;
     if(!font.loadFromFile("assets/font/poppins.ttf")) {
@@ -43,8 +45,9 @@ int main() {
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 running = false;
             }
@@ -61,7 +64,7 @@ int main() {
             return 0;
         }
         if(btnSetting.isSelected(window.getPosition())) {
-
+            
         }
         if(btnStart.isSelected(window.getPosition())) {
             running = true;
@@ -80,14 +83,6 @@ int main() {
             player1.colition(height);
             player2.colition(height);
         }
-
-
-
-
-
-
-
-
 
         window.clear();
         window.draw(labelPointPlayer1);
