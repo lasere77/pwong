@@ -57,23 +57,6 @@ void Ball::move() {
         }
     }
 
-    /*
-    //controlled the ball
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::T)) {
-        spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y - 1.0f);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
-        spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y + 1.0f);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-        spriteBall.setPosition(spriteBall.getPosition().x - 1.0f, spriteBall.getPosition().y);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
-        spriteBall.setPosition(spriteBall.getPosition().x + 1.0f, spriteBall.getPosition().y);
-    }
-    std::cout << std::endl;
-    */
-
     //debug
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
         std::cout << "up {" << up << "}" << std::endl;

@@ -10,8 +10,10 @@ int player2Point = 0;
 
 bool running = false;
 
-float width = 1920;
-float height = 1080;
+sf::RenderWindow window(sf::VideoMode(0, 0), "copy of pong", sf::Style::Fullscreen);
+
+float width = window.getSize().x;
+float height = window.getSize().y;
 
 Ball ball = Ball(4, width, height);
 
@@ -23,12 +25,11 @@ Button btnSetting = Button("setting", sf::Color::Red, 250.0f, 50.0f, (width / 2 
 Button btnExit = Button("exit", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f);
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(width, height), "copy of pong", sf::Style::Fullscreen);
     window.setFramerateLimit(112);
 
     sf::Font font;
     if(!font.loadFromFile("assets/font/poppins.ttf")) {
-        std::cerr << "error" << '\n';
+        std::cerr << "error to load font, please check your assets" << '\n';
     }
 
     sf::Text labelPointPlayer1, labelPointPlayer2;
@@ -54,15 +55,12 @@ int main() {
         labelPointPlayer1.setString("player1Point: " + std::to_string(player1Point));
         labelPointPlayer2.setString("player2Point: " + std::to_string(player2Point));
 
-        //std::cout << "x: " << sf::Mouse::getPosition().x << std::endl;
-        //std::cout << "y: " << sf::Mouse::getPosition().y << std::endl;
-
         //btn action
         if(btnExit.isSelected(window.getPosition())) {
             return 0;
         }
         if(btnSetting.isSelected(window.getPosition())) {
-            
+        
         }
         if(btnStart.isSelected(window.getPosition())) {
             running = true;

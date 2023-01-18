@@ -1,5 +1,7 @@
 #include "../include/Menu.hpp"
 
+int delayBtn = 0;
+
 Button::Button(std::string label, sf::Color color, float sizeX, float sizeY, float x, float y) {
     this->label = label;
     this->sizeX = sizeX;
@@ -11,7 +13,7 @@ Button::Button(std::string label, sf::Color color, float sizeX, float sizeY, flo
     spriteButton.setFillColor(color);
     
     if(!font.loadFromFile("assets/font/poppins.ttf")) {
-        std::cerr << "error" << '\n';
+        std::cerr << "error to load font, please check your assets" << std::endl;
     }
     text.setCharacterSize(15);
     text.setFont(font);
@@ -21,7 +23,7 @@ Button::Button(std::string label, sf::Color color, float sizeX, float sizeY, flo
 }
 
 bool Button::isSelected(sf::Vector2i vector) {
-    if(x <= sf::Mouse::getPosition().x && x + 250.0f >= sf::Mouse::getPosition().x && y + 10 <= sf::Mouse::getPosition().y && y + 80.0f >= sf::Mouse::getPosition().y  && sf::Mouse::isButtonPressed(sf::Mouse::Left)) { 
+    if(x <= (sf::Mouse::getPosition().x - vector.x) && x + 250.0f >= (sf::Mouse::getPosition().x - vector.x) && y <= (sf::Mouse::getPosition().y - vector.y) && y + 50.0f >= (sf::Mouse::getPosition().y - vector.y) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) { 
         spriteButton.setFillColor(sf::Color::Blue);
         return true;
     }else {
