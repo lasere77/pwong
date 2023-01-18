@@ -16,7 +16,7 @@ ScompileSource: src/Main.cpp
 	$(CC) -c src/*.cpp -I"libs\SFML-2.5.1\include" -DSFML_STATIC
 
 ScompileObject: Main.o
-	$(CC) *.o -o bin/$(EXEC) -L"libs\SFML-2.5.1\lib" -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 -mwindows -lsfml-main
+	$(CC) *.o -o bin/$(EXEC) -L"libs\SFML-2.5.1\lib" -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 -mwindows -lsfml-main -static
 
 run: bin/$(EXEC)
 	./bin/$(EXEC)
