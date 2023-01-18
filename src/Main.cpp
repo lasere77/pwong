@@ -26,8 +26,6 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(width, height), "copy of pong", sf::Style::Fullscreen);
     window.setFramerateLimit(112);
 
-    srand(time(nullptr));
-
     sf::Font font;
     if(!font.loadFromFile("assets/font/poppins.ttf")) {
         std::cerr << "error" << '\n';
@@ -105,13 +103,11 @@ int main() {
 
 void checkPoint() {
     if(ball.spriteBall.getPosition().x < 0) {
-        player2Point = player2Point + 1;
+        player2Point++;
         ball.spriteBall.setPosition(width / 2, height / 2);
-        std::cout << player2Point << std::endl;
     }
     if(ball.spriteBall.getPosition().x > width) {
-        player1Point = player1Point + 1;
+        player1Point++;
         ball.spriteBall.setPosition(width / 2, height / 2);
-        std::cout << player1Point << std::endl;
     }
 }

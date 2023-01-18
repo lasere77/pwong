@@ -9,4 +9,6 @@ class Ball {
 
     private:
         float speed;
+        float originalSpeed;
+        float rngSpeed;
 };

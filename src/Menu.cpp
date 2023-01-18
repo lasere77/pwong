@@ -27,6 +27,5 @@ bool Button::isSelected(sf::Vector2i vector) {
     }else {
         spriteButton.setFillColor(sf::Color::Red);
     }
-    std::cout << std::endl;
     return false;
 }
