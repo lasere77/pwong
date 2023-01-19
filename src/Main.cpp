@@ -17,8 +17,8 @@ float height = window.getSize().y;
 
 Ball ball = Ball(4, width, height);
 
-Player player1 = Player(20.0f, 250.0f, (width - 40.f), 100.0f, sf::Color::White, 0);
-Player player2 = Player(20.0f, 250.0f, 10.0f, 100.0f, sf::Color::Red, 1);
+Player player1 = Player(20.0f, 250.0f, (width - 40.f), 100.0f, "player1.jpg", 0);
+Player player2 = Player(20.0f, 250.0f, 10.0f, 100.0f, "player2.jpg", 1);
 
 Button btnStart = Button("start", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.0f), 280.0f);
 Button btnSetting = Button("setting", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f);
@@ -27,10 +27,12 @@ Button btnExit = Button("exit", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.
 int main() {
     window.setFramerateLimit(112);
 
+
     sf::Font font;
     if(!font.loadFromFile("assets/font/poppins.ttf")) {
         std::cerr << "error to load font, please check your assets" << '\n';
     }
+
 
     sf::Text labelPointPlayer1, labelPointPlayer2;
     labelPointPlayer1.setCharacterSize(15);
@@ -60,15 +62,17 @@ int main() {
             return 0;
         }
         if(btnSetting.isSelected(window.getPosition())) {
-        
+            
         }
         if(btnStart.isSelected(window.getPosition())) {
+            std::cout << player1Point << std::endl;
             running = true;
+            std::cout << player1Point << std::endl;
         }
 
         if(running) {
             checkPoint();
-
+            
             ball.move();
 
             ball.colition(player1.spritePlayer, player2.spritePlayer, height);
@@ -105,6 +109,7 @@ void checkPoint() {
         ball.spriteBall.setPosition(width / 2, height / 2);
     }
     if(ball.spriteBall.getPosition().x > width) {
+        std::cout << ball.spriteBall.getPosition().x << " " << width << std::endl;
         player1Point++;
         ball.spriteBall.setPosition(width / 2, height / 2);
     }

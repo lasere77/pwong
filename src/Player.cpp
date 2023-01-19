@@ -1,12 +1,13 @@
-#include "../include/Libs.hpp"
 #include "../include/Player.hpp"
 
-Player::Player(float sizeX, float sizeY, float x, float y, sf::Color color, int id) {
-    this->color = color;
+Player::Player(float sizeX, float sizeY, float x, float y, std::string img, int id) {
     this->id = id;
     spritePlayer.setSize(sf::Vector2f(sizeX, sizeY));
-    spritePlayer.setFillColor(color);
     spritePlayer.setPosition(x, y);
+    if(!texture.loadFromFile("assets/Player/Texture/" + img)) {
+        std::cerr << "error to load texture for player, please check your assets" << '\n';
+    }
+    spritePlayer.setTexture(&texture);
     std::cout << "a player has been generated." << std::endl;
 }
 

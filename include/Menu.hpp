@@ -1,3 +1,4 @@
+#pragma once
 #include "Libs.hpp"
 
 class Button {

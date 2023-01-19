@@ -1,4 +1,5 @@
 #pragma once
+#include "Libs.hpp"
 
 class Ball {
     public:
@@ -8,6 +9,7 @@ class Ball {
         sf::CircleShape spriteBall;
 
     private:
+        sf::Texture texture;
         float speed;
         float originalSpeed;
         float rngSpeed;

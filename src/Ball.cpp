@@ -1,7 +1,6 @@
-#include "../include/Libs.hpp"
 #include "../include/Ball.hpp"
 
-void changeDirection(int id);
+void colitonActionOnMove(int rng);
 int setRngOnColition();
 
 bool up = false;
@@ -15,16 +14,18 @@ Ball::Ball(float speed, float x, float y) {
     this->originalSpeed = speed;
     this->speed = speed;
     this->rngSpeed = speed;
-    spriteBall.setFillColor(sf::Color::White);
     spriteBall.setRadius(5.0f);
     spriteBall.setPosition(x, y);
+    if(!texture.loadFromFile("assets/Ball/Texture/Ball.jpg")) {
+        std::cerr << "error to load texture for ball, please check your assets" << '\n';
+    }
+    spriteBall.setTexture(&texture);
 }
 
 void Ball::move() {
     if(rotateMove) {
-        std::cout << "randmove activer" << std::endl;
         if(rngSpeed > 4) {
-            while (rngSpeed <= 4) {
+            while (rngSpeed < 4) {
                 speed--;
             }
         }
@@ -77,44 +78,26 @@ void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2, floa
         up = false;
         down = true;
         std::cout << "colition" << std::endl;
-        if(rng == 5) {
-            rotateMove = true;
-        }else {
-            rotateMove = false;
-        }
-        setRngOnColition();
+        colitonActionOnMove(rng);
     }
     if(spriteBall.getPosition().y >= height) {
         up = true;
         down = false;
         std::cout << "colition" << std::endl;
-        if(rng == 5) {
-            rotateMove = true;
-        }else {
-            rotateMove = false;
-        }
-        setRngOnColition();
+        colitonActionOnMove(rng);
     }
     //player colition
     if(spriteBall.getPosition().y >= player2.getPosition().y && spriteBall.getPosition().y <= player2.getPosition().y + 250 && spriteBall.getPosition().x >= player2.getPosition().x && spriteBall.getPosition().x <= player2.getPosition().x + 20) {
-        changeDirection(1);
+        left = false;
+        right = true;
         std::cout << "colition" << std::endl;
-        if(rng == 5) {
-            rotateMove = true;
-        }else {
-            rotateMove = false;
-        }
-        setRngOnColition();
+        colitonActionOnMove(rng);
     }
     if(spriteBall.getPosition().y >= player1.getPosition().y && spriteBall.getPosition().y <= player1.getPosition().y + 250 && spriteBall.getPosition().x >= player1.getPosition().x - 20 && spriteBall.getPosition().x <= player1.getPosition().x) {
-        changeDirection(0);
+        left = true;
+        right = false;
         std::cout << "colition" << std::endl;
-        if(rng == 5) {
-            rotateMove = true;
-        }else {
-            rotateMove = false;
-        }
-        setRngOnColition();
+        colitonActionOnMove(rng);
     }
  }
 
@@ -123,17 +106,11 @@ int setRngOnColition() {
     return rand() % 8 + 1;
 }
 
-void changeDirection(int id) {
-    if(id == 1) { 
-        up = false;
-        left = false;
-        down = true;
-        right = true;
+void colitonActionOnMove(int rng) {
+    if(rng == 5) {
+        rotateMove = true;
+    }else {
+        rotateMove = false;
     }
-    if(id == 0) {
-        up = true;
-        left = true;
-        down = false;
-        right = false;
-    }
+    setRngOnColition();
 }
