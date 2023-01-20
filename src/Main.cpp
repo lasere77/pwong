@@ -5,7 +5,7 @@
 
 void checkPoint();
 
-int player1Point = 0;
+int player1Point = -1;
 int player2Point = 0;
 
 bool running = false;
@@ -20,19 +20,19 @@ Ball ball = Ball(4, width, height);
 Player player1 = Player(20.0f, 250.0f, (width - 40.f), 100.0f, "player1.jpg", 0);
 Player player2 = Player(20.0f, 250.0f, 10.0f, 100.0f, "player2.jpg", 1);
 
-Button btnStart = Button("start", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.0f), 280.0f);
-Button btnSetting = Button("setting", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f);
-Button btnExit = Button("exit", sf::Color::Red, 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f);
+Button btnStart = Button("start", 250.0f, 50.0f, (width / 2 - 125.0f), 280.0f);
+Button btnSetting = Button("setting", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f);
+Button btnExit = Button("exit", 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f);
+
+Button btnBack = Button("back", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f);
 
 int main() {
     window.setFramerateLimit(112);
-
 
     sf::Font font;
     if(!font.loadFromFile("assets/font/poppins.ttf")) {
         std::cerr << "error to load font, please check your assets" << '\n';
     }
-
 
     sf::Text labelPointPlayer1, labelPointPlayer2;
     labelPointPlayer1.setCharacterSize(15);
@@ -41,7 +41,6 @@ int main() {
     labelPointPlayer2.setCharacterSize(15);
     labelPointPlayer2.setFont(font);
     labelPointPlayer2.setPosition(sf::Vector2(width - 120, 0.0f));
-
 
     while (window.isOpen()) {
         sf::Event event;
@@ -65,9 +64,7 @@ int main() {
             
         }
         if(btnStart.isSelected(window.getPosition())) {
-            std::cout << player1Point << std::endl;
             running = true;
-            std::cout << player1Point << std::endl;
         }
 
         if(running) {
@@ -103,13 +100,13 @@ int main() {
     return 0;
 }
 
+
 void checkPoint() {
     if(ball.spriteBall.getPosition().x < 0) {
         player2Point++;
         ball.spriteBall.setPosition(width / 2, height / 2);
     }
     if(ball.spriteBall.getPosition().x > width) {
-        std::cout << ball.spriteBall.getPosition().x << " " << width << std::endl;
         player1Point++;
         ball.spriteBall.setPosition(width / 2, height / 2);
     }

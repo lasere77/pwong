@@ -9,14 +9,14 @@ compileSource: src/Main.cpp
 	$(CC) -c src/*.cpp -I"libs\SFML-2.5.1\include"
 
 compileObject: Main.o
-	$(CC) *.o -o bin/$(EXEC) -L"libs\SFML-2.5.1\lib" -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) *.o -o bin/$(EXEC) -L"libs\SFML-2.5.1\lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 
 ScompileSource: src/Main.cpp
 	$(CC) -c src/*.cpp -I"libs\SFML-2.5.1\include" -DSFML_STATIC
 
 ScompileObject: Main.o
-	$(CC) *.o -o bin/$(EXEC) -L"libs\SFML-2.5.1\lib" -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 -mwindows -lsfml-main -static
+	$(CC) *.o -o bin/$(EXEC) -L"libs\SFML-2.5.1\lib" -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s -lopengl32 -lfreetype -lwinmm -lgdi32 -mwindows -lsfml-main -static
 
 run: bin/$(EXEC)
 	./bin/$(EXEC)
