@@ -7,6 +7,7 @@ class Player {
         sf::RectangleShape spritePlayer;
         void move();
         void colition(float height);
+        void bot(float posBallY); 
 
     private:
         sf::Texture texture;

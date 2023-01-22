@@ -1,36 +1,10 @@
 #include "../include/Libs.hpp"
-#include "../include/Player.hpp"
-#include "../include/Ball.hpp"
-#include "../include/Menu.hpp"
+#include "../include/Game.hpp"
 
 void checkPoint();
 void activateScene0(); //scene game
 void activateScene1(); //home scene
 void activateScene2(); //setting scene
-bool scene0 = false;
-bool scene1 = true;
-bool scene2 = false;
-
-int player1Point = -1;
-int player2Point = 0;
-
-bool running = false;
-
-sf::RenderWindow window(sf::VideoMode(0, 0), "copy of pong", sf::Style::Fullscreen);
-
-float width = window.getSize().x;
-float height = window.getSize().y;
-
-Ball ball = Ball(4, width, height);
-
-Player player1 = Player(20.0f, 250.0f, (width - 40.f), 100.0f, "player1.jpg", 0);
-Player player2 = Player(20.0f, 250.0f, 10.0f, 100.0f, "player2.jpg", 1);
-
-Button btnStart = Button("start", 250.0f, 50.0f, (width / 2 - 125.0f), 280.0f, true);
-Button btnSetting = Button("setting", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f, true);
-Button btnExit = Button("exit", 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f, true);
-
-Button btnBack = Button("back", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f, false);
 
 int main() {
     window.setFramerateLimit(112);
@@ -40,13 +14,18 @@ int main() {
         std::cerr << "error to load font, please check your assets" << '\n';
     }
 
-    sf::Text labelPointPlayer1, labelPointPlayer2;
+    sf::Text labelPointPlayer1, labelPointPlayer2, labelBot;
     labelPointPlayer1.setCharacterSize(15);
     labelPointPlayer1.setFont(font);
 
     labelPointPlayer2.setCharacterSize(15);
     labelPointPlayer2.setFont(font);
     labelPointPlayer2.setPosition(sf::Vector2(width - 120, 0.0f));
+
+    labelBot.setCharacterSize(15);
+    labelBot.setFont(font);
+    labelBot.setFillColor(sf::Color::Red);
+    labelBot.setPosition(sf::Vector2(width / 2 - 90, 0.0f));
 
     while (window.isOpen()) {
         sf::Event event;
@@ -62,6 +41,7 @@ int main() {
 
         labelPointPlayer1.setString("player1Point: " + std::to_string(player1Point));
         labelPointPlayer2.setString("player2Point: " + std::to_string(player2Point));
+        labelBot.setString("mode Solo Player1 VS Bot");
 
         //btn action
         if(btnExit.isSelected(window.getPosition())) {
@@ -77,6 +57,16 @@ int main() {
         if(btnBack.isSelected(window.getPosition())) {
             activateScene1();
         }
+        if(btnSolo.isSelected(window.getPosition())) {
+            if(modeSolo) {
+                modeSolo = false;
+            }else {
+                modeSolo = true;
+            }
+        }
+        if(modeSolo) {
+            player1.bot(ball.spriteBall.getPosition().y);
+        }
 
         if(running) {
             checkPoint();
@@ -85,10 +75,12 @@ int main() {
 
             ball.colition(player1.spritePlayer, player2.spritePlayer, height);
 
-            player1.move();
-            player2.move();
+            if(!modeSolo) {
+                player1.move();
+                player1.colition(height);
+            }
 
-            player1.colition(height);
+            player2.move();
             player2.colition(height);
         }
 
@@ -109,6 +101,11 @@ int main() {
         else if(scene2){
             window.draw(btnBack.spriteButton);
             window.draw(btnBack.text);
+            window.draw(btnSolo.spriteButton);
+            window.draw(btnSolo.text);
+        }
+        if(modeSolo) {
+            window.draw(labelBot);
         }
         window.display();
     }
@@ -132,6 +129,7 @@ void activateScene0() {
     btnStart.setOnScene(false);
     btnSetting.setOnScene(false);
     btnExit.setOnScene(false);
+    btnSolo.setOnScene(false);
     scene0 = true;
     scene1 = false;
     scene2 = false;
@@ -141,15 +139,18 @@ void activateScene1() {
     btnStart.setOnScene(true);
     btnSetting.setOnScene(true);
     btnExit.setOnScene(true);
+    btnSolo.setOnScene(false);
     scene0 = false;
     scene1 = true;
     scene2 = false;
+    
 }
 void activateScene2() {
     btnStart.setOnScene(false);
     btnSetting.setOnScene(false);
     btnExit.setOnScene(false);
     btnBack.setOnScene(true);
+    btnSolo.setOnScene(true);
     scene0 = false;
     scene1 = false;
     scene2 = true;

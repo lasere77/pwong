@@ -7,6 +7,7 @@ class Button {
         bool isSelected(sf::Vector2i vector);
         void setOnScene(bool onScene);
         bool getOnScene();
+        bool getIsTick();
         sf::RectangleShape spriteButton;
         sf::Text text;
 

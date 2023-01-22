@@ -38,3 +38,7 @@ void Player::colition(float height) {
         spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - 4.0f);
     }
 }
+
+void Player::bot(float posBallY) {
+    spritePlayer.setPosition(spritePlayer.getPosition().x, posBallY - 125);
+}

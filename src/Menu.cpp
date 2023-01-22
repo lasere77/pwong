@@ -35,7 +35,6 @@ bool Button::isSelected(sf::Vector2i vector) {
         canActivate = false;
         delay = 0;
         sound.play();
-        std::cout << "le btn: " << this->label << " a été activer" << std::endl;
         return true;
     }
     return false;
