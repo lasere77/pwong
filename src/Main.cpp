@@ -4,6 +4,12 @@
 #include "../include/Menu.hpp"
 
 void checkPoint();
+void activateScene0(); //scene game
+void activateScene1(); //home scene
+void activateScene2(); //setting scene
+bool scene0 = false;
+bool scene1 = true;
+bool scene2 = false;
 
 int player1Point = -1;
 int player2Point = 0;
@@ -20,11 +26,11 @@ Ball ball = Ball(4, width, height);
 Player player1 = Player(20.0f, 250.0f, (width - 40.f), 100.0f, "player1.jpg", 0);
 Player player2 = Player(20.0f, 250.0f, 10.0f, 100.0f, "player2.jpg", 1);
 
-Button btnStart = Button("start", 250.0f, 50.0f, (width / 2 - 125.0f), 280.0f);
-Button btnSetting = Button("setting", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f);
-Button btnExit = Button("exit", 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f);
+Button btnStart = Button("start", 250.0f, 50.0f, (width / 2 - 125.0f), 280.0f, true);
+Button btnSetting = Button("setting", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f, true);
+Button btnExit = Button("exit", 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f, true);
 
-Button btnBack = Button("back", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f);
+Button btnBack = Button("back", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f, false);
 
 int main() {
     window.setFramerateLimit(112);
@@ -48,8 +54,9 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                 running = false;
+                activateScene1();
             }
         }
 
@@ -61,10 +68,14 @@ int main() {
             return 0;
         }
         if(btnSetting.isSelected(window.getPosition())) {
-            
+            activateScene2();
         }
         if(btnStart.isSelected(window.getPosition())) {
             running = true;
+            activateScene0();
+        }
+        if(btnBack.isSelected(window.getPosition())) {
+            activateScene1();
         }
 
         if(running) {
@@ -87,13 +98,17 @@ int main() {
         window.draw(ball.spriteBall);
         window.draw(player1.spritePlayer);
         window.draw(player2.spritePlayer);
-        if(!running) {
+        if(scene1) {
             window.draw(btnStart.spriteButton);
             window.draw(btnSetting.spriteButton);
             window.draw(btnExit.spriteButton);
             window.draw(btnStart.text);
             window.draw(btnSetting.text);
             window.draw(btnExit.text);
+        }
+        else if(scene2){
+            window.draw(btnBack.spriteButton);
+            window.draw(btnBack.text);
         }
         window.display();
     }
@@ -110,4 +125,32 @@ void checkPoint() {
         player1Point++;
         ball.spriteBall.setPosition(width / 2, height / 2);
     }
+}
+
+void activateScene0() {
+    btnBack.setOnScene(false);
+    btnStart.setOnScene(false);
+    btnSetting.setOnScene(false);
+    btnExit.setOnScene(false);
+    scene0 = true;
+    scene1 = false;
+    scene2 = false;
+}
+void activateScene1() {
+    btnBack.setOnScene(false);
+    btnStart.setOnScene(true);
+    btnSetting.setOnScene(true);
+    btnExit.setOnScene(true);
+    scene0 = false;
+    scene1 = true;
+    scene2 = false;
+}
+void activateScene2() {
+    btnStart.setOnScene(false);
+    btnSetting.setOnScene(false);
+    btnExit.setOnScene(false);
+    btnBack.setOnScene(true);
+    scene0 = false;
+    scene1 = false;
+    scene2 = true;
 }

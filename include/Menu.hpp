@@ -3,10 +3,13 @@
 
 class Button {
     public:
-        Button(std::string lable, float sizeX, float sizeY, float x, float y);
+        Button(std::string lable, float sizeX, float sizeY, float x, float y, bool canActivate);
         bool isSelected(sf::Vector2i vector);
+        void setOnScene(bool onScene);
+        bool getOnScene();
         sf::RectangleShape spriteButton;
         sf::Text text;
+
 
     private:
         sf::SoundBuffer bufferSound;
@@ -14,7 +17,7 @@ class Button {
         std::string label;
         sf::Sound sound;
         sf::Font font;
-        //bool onScene;
+        bool onScene;
         float x;
         float y;
         float sizeX;
