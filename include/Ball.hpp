@@ -7,10 +7,13 @@ class Ball {
         void colition(sf::RectangleShape player1, sf::RectangleShape player2, float height);
         void move();
         sf::CircleShape spriteBall;
+        float getSpeed();
+        void setSpeed(int _speed);
 
     private:
+        sf::SoundBuffer bufferSound;
         sf::Texture texture;
+        sf::Sound sound;
         float speed;
-        float originalSpeed;
         float rngSpeed;
 };

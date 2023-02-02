@@ -1,10 +1,42 @@
 #include "../include/Libs.hpp"
-#include "../include/Game.hpp"
+#include "../include/Player.hpp"
+#include "../include/Ball.hpp"
+#include "../include/Menu.hpp"
 
 void checkPoint();
 void activateScene0(); //scene game
 void activateScene1(); //home scene
 void activateScene2(); //setting scene
+
+bool scene0 = false;
+bool scene1 = true;
+bool scene2 = false;
+
+bool modeSolo = false;
+
+sf::RenderWindow window(sf::VideoMode(0, 0), "copy of pong", sf::Style::Fullscreen);
+
+float width = window.getSize().x;
+float height = window.getSize().y;
+
+bool running = false;
+
+int player1Point = 0;
+int player2Point = 0;
+
+Ball ball = Ball(4, width / 2, height / 2);
+
+Player player1 = Player(20.0f, 250.0f, (width - 40.f), 100.0f, "player1.jpg", 0);
+Player player2 = Player(20.0f, 250.0f, 10.0f, 100.0f, "player2.jpg", 1);
+
+Button btnStart = Button("start", 250.0f, 50.0f, (width / 2 - 125.0f), 280.0f, true);
+Button btnSetting = Button("setting", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f, true);
+Button btnExit = Button("exit", 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f, true);
+
+Button btnBack = Button("back", 250.0f, 50.0f, (width / 2 - 125.0f), 360.0f, false);
+Button btnSolo = Button("mode solo", 250.0f, 50.0f, (width / 2 - 125.0f), 440.0f, false);
+
+Entry entrySpeedBall = Entry(250.0f, 50.0f, (width / 2 - 125.0f), 280.0f, false);
 
 int main() {
     window.setFramerateLimit(112);
@@ -27,9 +59,29 @@ int main() {
     labelBot.setFillColor(sf::Color::Red);
     labelBot.setPosition(sf::Vector2(width / 2 - 90, 0.0f));
 
+    bool respectDelay = true;
+    int delay = 0;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
+            delay++;
+            if(delay >= 5) {
+                respectDelay = true;
+            }
+            if(entrySpeedBall.getCheckKeyboard()) {
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace) && respectDelay) {
+                    entrySpeedBall.BackSpaceText();
+                    respectDelay = false;
+                    delay = 0;
+                }
+                else if(!sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
+                    if (event.type == sf::Event::TextEntered) {
+                        if (event.text.unicode < 128)
+                            entrySpeedBall.setText(static_cast<char>(event.text.unicode));
+                    }
+                }
+            }
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
@@ -38,7 +90,7 @@ int main() {
                 activateScene1();
             }
         }
-
+        
         labelPointPlayer1.setString("player1Point: " + std::to_string(player1Point));
         labelPointPlayer2.setString("player2Point: " + std::to_string(player2Point));
         labelBot.setString("mode Solo Player1 VS Bot");
@@ -63,6 +115,31 @@ int main() {
             }else {
                 modeSolo = true;
             }
+        }
+        if(entrySpeedBall.isSelected(window.getPosition())) {
+            //converte entry String to int
+            std::string entryOutput = entrySpeedBall.getText().getString();
+            std::string output;
+            for(int i = 0; i != entryOutput.length(); i++) {
+                for(int j = 0;  j != 10; j++) {
+                    std::cout << (int)entryOutput.at(i) - 48 << std::endl;
+                    if((int)entryOutput.at(i) - 48 == j) {
+                        output += entryOutput.at(i);
+                    }
+                }
+            }
+            try {
+                int desiredSpeed = stoi(output);
+                ball.setSpeed(desiredSpeed);
+                player1.setSpeed(desiredSpeed);
+                player2.setSpeed(desiredSpeed);
+            } catch(const std::exception& e) {
+                ball.setSpeed(ball.getSpeed());
+                player1.setSpeed(player1.getSpeed());
+                player2.setSpeed(player2.getSpeed());
+                std::cout << "the ball speed is maximum 16." << std::endl;
+            }
+            std::cout << "the speed of the ball is: " << ball.getSpeed() << std::endl;
         }
         if(modeSolo) {
             player1.bot(ball.spriteBall.getPosition().y);
@@ -94,15 +171,17 @@ int main() {
             window.draw(btnStart.spriteButton);
             window.draw(btnSetting.spriteButton);
             window.draw(btnExit.spriteButton);
-            window.draw(btnStart.text);
-            window.draw(btnSetting.text);
-            window.draw(btnExit.text);
+            window.draw(btnStart.getText());
+            window.draw(btnSetting.getText());
+            window.draw(btnExit.getText());
         }
         else if(scene2){
             window.draw(btnBack.spriteButton);
-            window.draw(btnBack.text);
+            window.draw(btnBack.getText());
             window.draw(btnSolo.spriteButton);
-            window.draw(btnSolo.text);
+            window.draw(btnSolo.getText());
+            window.draw(entrySpeedBall.spriteEntry);
+            window.draw(entrySpeedBall.getText());
         }
         if(modeSolo) {
             window.draw(labelBot);
@@ -130,6 +209,8 @@ void activateScene0() {
     btnSetting.setOnScene(false);
     btnExit.setOnScene(false);
     btnSolo.setOnScene(false);
+    entrySpeedBall.setOnScene(false);
+    entrySpeedBall.setCheckKeyboard(false);
     scene0 = true;
     scene1 = false;
     scene2 = false;
@@ -140,6 +221,8 @@ void activateScene1() {
     btnSetting.setOnScene(true);
     btnExit.setOnScene(true);
     btnSolo.setOnScene(false);
+    entrySpeedBall.setOnScene(false);
+    entrySpeedBall.setCheckKeyboard(false);
     scene0 = false;
     scene1 = true;
     scene2 = false;
@@ -151,6 +234,7 @@ void activateScene2() {
     btnExit.setOnScene(false);
     btnBack.setOnScene(true);
     btnSolo.setOnScene(true);
+    entrySpeedBall.setOnScene(true);
     scene0 = false;
     scene1 = false;
     scene2 = true;

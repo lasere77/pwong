@@ -2,6 +2,7 @@
 
 Player::Player(float sizeX, float sizeY, float x, float y, std::string img, int id) {
     this->id = id;
+    this->speed = 4.0f;
     spritePlayer.setSize(sf::Vector2f(sizeX, sizeY));
     spritePlayer.setPosition(x, y);
     if(!texture.loadFromFile("assets/Player/Texture/" + img)) {
@@ -14,31 +15,41 @@ Player::Player(float sizeX, float sizeY, float x, float y, std::string img, int 
 void Player::move() {
     if(id == 0) {
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + 4.0f);
+            spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + speed);
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - 4.0f);
+            spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - speed);
         }
     }
     if (id == 1) {
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + 4.0f);
+            spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + speed);
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-            spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - 4.0f);
+            spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - speed);
         }
     }
 }
 
 void Player::colition(float height) {
     if(spritePlayer.getPosition().y < 0) {
-        spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + 4.0f);
+        spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + speed);
     }
     if(spritePlayer.getPosition().y > height - 250) {
-        spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - 4.0f);
+        spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - speed);
     }
 }
 
 void Player::bot(float posBallY) {
     spritePlayer.setPosition(spritePlayer.getPosition().x, posBallY - 125);
+}
+
+float Player::getSpeed() {
+    return speed;
+}
+void Player::setSpeed(float _speed) {
+    if(_speed > 16){
+        _speed = 16;
+    }
+    speed = _speed;
 }

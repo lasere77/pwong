@@ -4,7 +4,7 @@ copy of the first video games (pong).
 
 ---
 ## pwong information
-cette copie a pour but de pouvoir m'améliorer en c++
+this copy has for but to be able to improve me in c++
 
 ## Credits
 

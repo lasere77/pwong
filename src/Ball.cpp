@@ -1,61 +1,37 @@
 #include "../include/Ball.hpp"
 
-void colitonActionOnMove(int rng);
 int setRngOnColition();
 
 bool up = false;
 bool down = true;
 bool right = true;
 bool left = false;
-bool rotateMove = false;
 
 Ball::Ball(float speed, float x, float y) {
     std::cout << "a ball has been generated." << std::endl; 
-    this->originalSpeed = speed;
     this->speed = speed;
     this->rngSpeed = speed;
     spriteBall.setRadius(5.0f);
     spriteBall.setPosition(x, y);
-    if(!texture.loadFromFile("assets/Ball/Texture/Ball.jpg")) {
-        std::cerr << "error to load texture for ball, please check your assets" << '\n';
+    if(!texture.loadFromFile("assets/Ball/Texture/Ball.jpg") || !bufferSound.loadFromFile("assets/Ball/Sound/onColition.wav")) {
+        std::cerr << "error to load texture for ball or sound, please check your assets" << '\n';
     }
+    sound.setBuffer(bufferSound);
     spriteBall.setTexture(&texture);
 }
 
 void Ball::move() {
-    if(rotateMove) {
-        if(rngSpeed > 4) {
-            while (rngSpeed < 4) {
-                speed--;
-            }
-        }
-        if(down) {
-            spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y + speed);
-        }
-        if(up) {
-            spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y - speed);
-        }
-        if(left) {
-            spriteBall.setPosition(spriteBall.getPosition().x - rngSpeed, spriteBall.getPosition().y);
-        }
-        if(right) {
-            spriteBall.setPosition(spriteBall.getPosition().x + rngSpeed, spriteBall.getPosition().y);
-        }
-    }else {
-        rngSpeed = setRngOnColition();
-        speed = originalSpeed;
-        if(down) {
-            spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y + speed);
-        }
-        if(up) {
-            spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y - speed);
-        }
-        if(left) {
-            spriteBall.setPosition(spriteBall.getPosition().x - speed, spriteBall.getPosition().y);
-        }
-        if(right) {
-            spriteBall.setPosition(spriteBall.getPosition().x + speed, spriteBall.getPosition().y);
-        }
+    if(down) {
+        spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y + speed);
+    }
+    if(up) {
+        spriteBall.setPosition(spriteBall.getPosition().x, spriteBall.getPosition().y - speed);
+    }
+    if(left) {
+        spriteBall.setPosition(spriteBall.getPosition().x - rngSpeed - (speed / 2), spriteBall.getPosition().y);
+    }
+    if(right) {
+        spriteBall.setPosition(spriteBall.getPosition().x + rngSpeed + (speed / 2), spriteBall.getPosition().y);
     }
 
     //debug
@@ -72,45 +48,49 @@ void Ball::move() {
 
 
 void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2, float height) {
-    //border colition
-    float rng = rand() % 5 + 1;
+    //border colition    
     if(spriteBall.getPosition().y <= 0) {
         up = false;
         down = true;
         std::cout << "colition" << std::endl;
-        colitonActionOnMove(rng);
+        rngSpeed = setRngOnColition();
+        sound.play();
     }
     if(spriteBall.getPosition().y >= height) {
         up = true;
         down = false;
         std::cout << "colition" << std::endl;
-        colitonActionOnMove(rng);
+        rngSpeed = setRngOnColition();
+        sound.play();
     }
     //player colition
     if(spriteBall.getPosition().y >= player2.getPosition().y && spriteBall.getPosition().y <= player2.getPosition().y + 250 && spriteBall.getPosition().x >= player2.getPosition().x && spriteBall.getPosition().x <= player2.getPosition().x + 20) {
         left = false;
         right = true;
         std::cout << "colition" << std::endl;
-        colitonActionOnMove(rng);
+        rngSpeed = setRngOnColition();
+        sound.play();
     }
     if(spriteBall.getPosition().y >= player1.getPosition().y && spriteBall.getPosition().y <= player1.getPosition().y + 250 && spriteBall.getPosition().x >= player1.getPosition().x - 20 && spriteBall.getPosition().x <= player1.getPosition().x) {
         left = true;
         right = false;
         std::cout << "colition" << std::endl;
-        colitonActionOnMove(rng);
+        rngSpeed = setRngOnColition();
+        sound.play();
     }
  }
 
-int setRngOnColition() {
-    srand(time(nullptr));
-    return rand() % 8 + 1;
+float Ball::getSpeed() { 
+    return speed;
+}
+void Ball::setSpeed(int _speed) {
+    if(_speed > 16){
+        _speed = 16;
+    }
+    speed = _speed;
 }
 
-void colitonActionOnMove(int rng) {
-    if(rng == 5) {
-        rotateMove = true;
-    }else {
-        rotateMove = false;
-    }
-    setRngOnColition();
+int setRngOnColition() {
+    srand(time(nullptr));
+    return rand() % 4 + 1;
 }
