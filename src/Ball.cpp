@@ -91,6 +91,5 @@ void Ball::setSpeed(int _speed) {
 }
 
 int setRngOnColition() {
-    srand(time(nullptr));
-    return rand() % 4 + 1;
+    return rand() % 5;
 }

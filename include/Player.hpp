@@ -14,6 +14,8 @@ class Player {
     private:
         sf::Texture texture;
         float speed;
+        float sizeX;
+        float sizeY;
         int id;
         
 };

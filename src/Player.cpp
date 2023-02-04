@@ -1,6 +1,8 @@
 #include "../include/Player.hpp"
 
 Player::Player(float sizeX, float sizeY, float x, float y, std::string img, int id) {
+    this->sizeX = sizeX;
+    this->sizeY = sizeY;
     this->id = id;
     this->speed = 4.0f;
     spritePlayer.setSize(sf::Vector2f(sizeX, sizeY));
@@ -41,7 +43,15 @@ void Player::colition(float height) {
 }
 
 void Player::bot(float posBallY) {
-    spritePlayer.setPosition(spritePlayer.getPosition().x, posBallY - 125);
+    //int decalage = rand() % 150 + 1;
+    if(spritePlayer.getPosition().y - 6 + sizeY / 2 > posBallY) {//-6 for radius ball
+        spritePlayer.setPosition(spritePlayer.getPosition().x,spritePlayer.getPosition().y - speed);
+    }else if(spritePlayer.getPosition().y + 6 + sizeY / 2 < posBallY) {//+6 for radius ball
+        spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + speed);
+    }else {
+        spritePlayer.setPosition(spritePlayer.getPosition().x,spritePlayer.getPosition().y);
+    }
+    //std::cout << decalage << std::endl;
 }
 
 float Player::getSpeed() {

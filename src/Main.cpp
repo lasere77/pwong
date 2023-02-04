@@ -2,6 +2,8 @@
 #include "../include/Player.hpp"
 #include "../include/Ball.hpp"
 #include "../include/Menu.hpp"
+#include "../include/Time.hpp"
+#include <thread>
 
 void checkPoint();
 void activateScene0(); //scene game
@@ -40,19 +42,25 @@ Entry entrySpeedBall = Entry(250.0f, 50.0f, (width / 2 - 125.0f), 280.0f, false)
 
 int main() {
     window.setFramerateLimit(112);
-
+    srand(time(nullptr));
     sf::Font font;
     if(!font.loadFromFile("assets/font/poppins.ttf")) {
         std::cerr << "error to load font, please check your assets" << '\n';
     }
 
-    sf::Text labelPointPlayer1, labelPointPlayer2, labelBot;
+    std::thread timerThread(timer);
+
+    sf::Text labelPointPlayer1, labelPointPlayer2, labelTime, labelBot;
     labelPointPlayer1.setCharacterSize(15);
     labelPointPlayer1.setFont(font);
 
     labelPointPlayer2.setCharacterSize(15);
     labelPointPlayer2.setFont(font);
     labelPointPlayer2.setPosition(sf::Vector2(width - 120, 0.0f));
+
+    labelTime.setCharacterSize(15);
+    labelTime.setFont(font);
+    labelTime.setPosition(sf::Vector2(width / 2, height - 20));
 
     labelBot.setCharacterSize(15);
     labelBot.setFont(font);
@@ -87,16 +95,20 @@ int main() {
             }
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                 running = false;
+                setThreadAction(false);
                 activateScene1();
             }
         }
         
         labelPointPlayer1.setString("player1Point: " + std::to_string(player1Point));
         labelPointPlayer2.setString("player2Point: " + std::to_string(player2Point));
+        labelTime.setString("time: " + std::to_string(getTime()));
         labelBot.setString("mode Solo Player1 VS Bot");
 
         //btn action
         if(btnExit.isSelected(window.getPosition())) {
+            killThread();
+            timerThread.join();
             return 0;
         }
         if(btnSetting.isSelected(window.getPosition())) {
@@ -146,6 +158,7 @@ int main() {
         }
 
         if(running) {
+            setThreadAction(true);
             checkPoint();
             
             ball.move();
@@ -164,6 +177,7 @@ int main() {
         window.clear();
         window.draw(labelPointPlayer1);
         window.draw(labelPointPlayer2);
+        window.draw(labelTime);
         window.draw(ball.spriteBall);
         window.draw(player1.spritePlayer);
         window.draw(player2.spritePlayer);
@@ -188,6 +202,8 @@ int main() {
         }
         window.display();
     }
+    killThread();
+    timerThread.join();
     return 0;
 }
 
