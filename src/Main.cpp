@@ -153,9 +153,6 @@ int main() {
             }
             std::cout << "the speed of the ball is: " << ball.getSpeed() << std::endl;
         }
-        if(modeSolo) {
-            player1.bot(ball.spriteBall.getPosition().y);
-        }
 
         if(running) {
             setThreadAction(true);
@@ -168,6 +165,8 @@ int main() {
             if(!modeSolo) {
                 player1.move();
                 player1.colition(height);
+            }else {
+                player1.bot(ball.spriteBall.getPosition().y);
             }
 
             player2.move();

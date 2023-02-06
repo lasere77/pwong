@@ -43,15 +43,20 @@ void Player::colition(float height) {
 }
 
 void Player::bot(float posBallY) {
-    //int decalage = rand() % 150 + 1;
-    if(spritePlayer.getPosition().y - 6 + sizeY / 2 > posBallY) {//-6 for radius ball
+    bool orgineBotFailDir = botFailDir;
+    if(spritePlayer.getPosition().y - botFail - sizeY / 2 > posBallY) {
         spritePlayer.setPosition(spritePlayer.getPosition().x,spritePlayer.getPosition().y - speed);
-    }else if(spritePlayer.getPosition().y + 6 + sizeY / 2 < posBallY) {//+6 for radius ball
+        botFailDir = 1;
+    }else if(spritePlayer.getPosition().y + botFail + sizeY / 2 < posBallY) {
         spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + speed);
+        botFailDir = 0;
     }else {
         spritePlayer.setPosition(spritePlayer.getPosition().x,spritePlayer.getPosition().y);
     }
-    //std::cout << decalage << std::endl;
+    if(botFailDir != orgineBotFailDir) {
+        botFail = rand() % 11;
+        std::cout << botFail << std::endl;
+    }
 }
 
 float Player::getSpeed() {

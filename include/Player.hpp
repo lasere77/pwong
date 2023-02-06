@@ -16,6 +16,8 @@ class Player {
         float speed;
         float sizeX;
         float sizeY;
+        bool botFailDir;
+        int botFail;
         int id;
         
 };
