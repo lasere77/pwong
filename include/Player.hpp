@@ -10,6 +10,7 @@ class Player {
         void move();
         float getSpeed();
         void setSpeed(float _speed);
+        void changeSize(float);
 
     private:
         sf::Texture texture;

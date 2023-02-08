@@ -3,7 +3,7 @@
 
 class Button {
     public:
-        Button(std::string lable, float sizeX, float sizeY, float x, float y, bool canActivate);
+        Button(std::string lable, float sizeX, float sizeY, float x, float y, bool split, bool canActivate);
         bool isSelected(sf::Vector2i vector);
         sf::Text getText();
         void setOnScene(bool onScene);
@@ -16,6 +16,8 @@ class Button {
         sf::Font font;
         sf::Text text;
         bool onScene;
+        float sizeX;
+        float sizeY;
         float x;
         float y;
 };
@@ -31,6 +33,7 @@ class Entry{
         bool getCheckKeyboard();
         void setCheckKeyboard(bool checkKeyboard);
         void BackSpaceText();
+        std::string getKey();
         sf::RectangleShape spriteEntry;
 
     private:

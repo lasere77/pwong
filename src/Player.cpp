@@ -37,7 +37,7 @@ void Player::colition(float height) {
     if(spritePlayer.getPosition().y < 0) {
         spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y + speed);
     }
-    if(spritePlayer.getPosition().y > height - 250) {
+    if(spritePlayer.getPosition().y > height - sizeY) {
         spritePlayer.setPosition(spritePlayer.getPosition().x, spritePlayer.getPosition().y - speed);
     }
 }
@@ -57,6 +57,12 @@ void Player::bot(float posBallY) {
         botFail = rand() % 11;
         std::cout << botFail << std::endl;
     }
+}
+
+
+void Player::changeSize(float _sizeY) {
+    this->sizeY = _sizeY;
+    spritePlayer.setSize(sf::Vector2(sizeX, sizeY));
 }
 
 float Player::getSpeed() {

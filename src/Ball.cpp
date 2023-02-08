@@ -64,14 +64,14 @@ void Ball::colition(sf::RectangleShape player1, sf::RectangleShape player2, floa
         sound.play();
     }
     //player colition
-    if(spriteBall.getPosition().y >= player2.getPosition().y && spriteBall.getPosition().y <= player2.getPosition().y + 250 && spriteBall.getPosition().x >= player2.getPosition().x && spriteBall.getPosition().x <= player2.getPosition().x + 20) {
+    if(spriteBall.getPosition().y >= player2.getPosition().y && spriteBall.getPosition().y <= player2.getPosition().y + player2.getSize().y && spriteBall.getPosition().x >= player2.getPosition().x && spriteBall.getPosition().x <= player2.getPosition().x + 20) {
         left = false;
         right = true;
         std::cout << "colition" << std::endl;
         rngSpeed = setRngOnColition();
         sound.play();
     }
-    if(spriteBall.getPosition().y >= player1.getPosition().y && spriteBall.getPosition().y <= player1.getPosition().y + 250 && spriteBall.getPosition().x >= player1.getPosition().x - 20 && spriteBall.getPosition().x <= player1.getPosition().x) {
+    if(spriteBall.getPosition().y >= player1.getPosition().y && spriteBall.getPosition().y <= player1.getPosition().y + player1.getSize().y && spriteBall.getPosition().x >= player1.getPosition().x - 20 && spriteBall.getPosition().x <= player1.getPosition().x) {
         left = true;
         right = false;
         std::cout << "colition" << std::endl;

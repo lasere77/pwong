@@ -14,9 +14,11 @@ void resetDelay() {
     delay = 0;
 }
 
-Button::Button(std::string label, float sizeX, float sizeY, float x, float y, bool onScene) {
+Button::Button(std::string label, float sizeX, float sizeY, float x, float y, bool split, bool onScene) {
     this->x = x;
     this->y = y;
+    this->sizeX = sizeX;
+    this->sizeY = sizeY;
     this->onScene = onScene;
     spriteButton.setSize(sf::Vector2(sizeX, sizeY));
     spriteButton.setPosition(x, y);
@@ -29,14 +31,18 @@ Button::Button(std::string label, float sizeX, float sizeY, float x, float y, bo
     
     text.setCharacterSize(15);
     text.setFont(font);
-    text.setPosition(sf::Vector2(x + (sizeX / 2) - (label.length() * 2), y + (sizeY / 2 - 10)));
+    if(split) {
+        text.setPosition(sf::Vector2(x + (sizeX / 2) - (label.length() * 4), y + (sizeY / 2 - 10)));
+    }else {
+        text.setPosition(sf::Vector2(x + (sizeX / 2) - (label.length() * 2), y + (sizeY / 2 - 10)));
+    }
     text.setString(label);
     std::cout << "a Button has been generated." << std::endl;
 }
 
 bool Button::isSelected(sf::Vector2i vector) {
     setDelay(180);
-    if(respectDelay && onScene && x <= (sf::Mouse::getPosition().x - vector.x) && x + 250.0f >= (sf::Mouse::getPosition().x - vector.x) && y <= (sf::Mouse::getPosition().y - vector.y) && y + 50.0f >= (sf::Mouse::getPosition().y - vector.y) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) { 
+    if(respectDelay && onScene && x <= (sf::Mouse::getPosition().x - vector.x) && x + sizeX >= (sf::Mouse::getPosition().x - vector.x) && y <= (sf::Mouse::getPosition().y - vector.y) && y + sizeY >= (sf::Mouse::getPosition().y - vector.y) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) { 
         resetDelay();
         sound.play();
         return true;
@@ -53,8 +59,9 @@ void Button::setOnScene(bool onScene) {
     this->onScene = onScene;
 }
 
-
-//Entry
+/*
+Entry
+*/
 Entry::Entry(float sizeX, float sizeY, float x, float y, bool onScene) {
     this->x = x;
     this->y = y;
@@ -119,4 +126,19 @@ void Entry::BackSpaceText() {
         str.pop_back();
         text.setString(str);
     }
+}
+
+std::string Entry::getKey() {
+    //converte entry String to int
+    std::string entryOutput = text.getString();
+    std::string output;
+    for(int i = 0; i != entryOutput.length(); i++) {
+        for(int j = 0;  j != 10; j++) {
+            std::cout << (int)entryOutput.at(i) - 48 << std::endl;
+            if((int)entryOutput.at(i) - 48 == j) {
+                output += entryOutput.at(i);
+            }
+        }
+    }
+    return output;
 }
